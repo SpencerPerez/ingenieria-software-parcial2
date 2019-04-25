@@ -20,7 +20,15 @@ public class FacturaService {
     public List<CabeceraFacturaEntity> buscarTodasCabecerasFactura() {
         return (List<CabeceraFacturaEntity>) this.cabeceraFacturaRepository.findAll();
     }
-    
+
+    public CabeceraFacturaEntity crearFactura (CabeceraFacturaEntity cabeceraFacturaEntity){
+        return cabeceraFacturaRepository.save(cabeceraFacturaEntity);
+    }
+
+    public  DetalleFacturaEntity crearDetalleFactura (DetalleFacturaEntity detalleFacturaEntity){
+        return detalleFacturaRepository.save(detalleFacturaEntity);
+    }
+
     public List<DetalleFacturaEntity> buscarTodosDetallesFactura() {
         return (List<DetalleFacturaEntity>) this.detalleFacturaRepository.findAll();
     }
@@ -28,4 +36,5 @@ public class FacturaService {
     public List<DetalleFacturaEntity> buscarTodosDetallesFactura(Long idCabeceraFactura) {
         return this.detalleFacturaRepository.findByHeader(idCabeceraFactura);
     }
+
 }

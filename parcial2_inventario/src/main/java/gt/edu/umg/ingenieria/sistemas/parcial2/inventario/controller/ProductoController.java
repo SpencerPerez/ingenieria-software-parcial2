@@ -20,20 +20,16 @@ public class ProductoController {
 
     @PostMapping("/registrarProducto")
     public ProductoEntity create(@RequestBody ProductoEntity entity) {
-        entity.setName(
-                entity.getName().substring(0, 1).toUpperCase() + entity.getName().substring(1)
-        );
         return this.productoService.registrarProducto(entity);
     }
 
     @PutMapping("/actualizarStock/{id}/incrementar/{amount}")
     public String updateStockAdd(@PathVariable long id, @PathVariable int amount) {
-        ProductoEntity entity = this.productoService.incrementarStock(id, amount);
-        return "Stock actualizado: [" + entity.getName() + " " + entity.getStock() + "]";
+        return this.productoService.incrementarStock(id, amount);
     }
 
     @PutMapping("/actualizarStock/{id}/decrementar/{amount}")
-    public ProductoEntity updateStockSub(@PathVariable long id, @PathVariable int amount) {
+    public String updateStockSub(@PathVariable long id, @PathVariable int amount) {
         return this.productoService.quitarStock(id, amount);
     }
 

@@ -14,26 +14,25 @@ public class ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
-
     public List<ProductoEntity> buscarTodos() {
     List<ProductoEntity> list = (List<ProductoEntity>) this.productoRepository.findAll();
         list.sort(Comparator.comparing(ProductoEntity::getName));
         return list;
     }
-
-    public ProductoEntity registrarProducto(ProductoEntity productoEntity) {
-        return productoRepository.save(productoEntity);
+    public ProductoEntity registrarProducto(ProductoEntity entity) {
+        entity.setName(
+                entity.getName().substring(0, 1).toUpperCase() + entity.getName().substring(1).toLowerCase()
+        );
+        return productoRepository.save(entity);
     }
-
-    public ProductoEntity incrementarStock(long id, int amount) {
-        ProductoEntity productoEntity = productoRepository.findById(id).get();
-        productoEntity.setStock(productoEntity.getStock() + amount);
-        return productoRepository.save(productoEntity);
+    public String incrementarStock(long id, int amount) {
+        ProductoEntity entity = productoRepository.findById(id).get();
+        entity.setStock(entity.getStock() + amount);
+        return "Stock actualizado: [" + entity.getName() + " " + entity.getStock() + "]";
     }
-
-    public ProductoEntity quitarStock(long id, int amount) {
-        ProductoEntity productoEntity = productoRepository.findById(id).get();
-        productoEntity.setStock(productoEntity.getStock() - amount);
-        return productoRepository.save(productoEntity);
+    public String quitarStock(long id, int amount) {
+        ProductoEntity entity = productoRepository.findById(id).get();
+        entity.setStock(entity.getStock() - amount);
+        return "Stock actualizado: [" + entity.getName() + " " + entity.getStock() + "]";
     }
 }
