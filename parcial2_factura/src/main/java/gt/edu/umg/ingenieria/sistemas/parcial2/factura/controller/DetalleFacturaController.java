@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/detalleFactura")
 public class DetalleFacturaController {
+
     @Autowired
     private FacturaService facturaService;
 
@@ -15,5 +16,4 @@ public class DetalleFacturaController {
     public DetalleFacturaEntity create(@RequestBody DetalleFacturaEntity entity, @PathVariable long header) {
         return this.facturaService.crearDetalleFactura(entity, header);
     }
-        
 }
