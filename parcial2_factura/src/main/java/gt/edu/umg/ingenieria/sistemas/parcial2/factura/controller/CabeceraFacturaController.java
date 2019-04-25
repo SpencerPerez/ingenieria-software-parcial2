@@ -13,7 +13,7 @@ public class CabeceraFacturaController {
     @Autowired
     private FacturaService facturaService;
 
-    @GetMapping("/buscarTodas")
+    @GetMapping("/buscarTodos")
     public List<CabeceraFacturaEntity> buscarTodas() {
         return this.facturaService.buscarTodasCabecerasFactura();
     }

@@ -34,30 +34,30 @@ public class FacturaService {
         return this.detalleFacturaRepository.findByHeader(idCabeceraFactura);
     }
 
-    public CabeceraFacturaEntity crearCabeceraFactura(CabeceraFacturaEntity entity) {
-        String[] words = entity.getClientName().split(" ");
+    public CabeceraFacturaEntity crearCabeceraFactura(CabeceraFacturaEntity cabeceraFacturaEntity) {
+        String[] words = cabeceraFacturaEntity.getClientName().split(" ");
 
         for (int i = 0; i < words.length; i++)
         {
             words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1).toLowerCase();
         }
 
-        entity.setClientName(String.join(" ", words));
-        return cabeceraFacturaRepository.save(entity);
+        cabeceraFacturaEntity.setClientName(String.join(" ", words));
+        return cabeceraFacturaRepository.save(cabeceraFacturaEntity);
     }
 
-    public DetalleFacturaEntity crearDetalleFactura(DetalleFacturaEntity entity, long header) {
-        entity.setHeader(header);
-        return detalleFacturaRepository.save(entity);
+    public DetalleFacturaEntity crearDetalleFactura(DetalleFacturaEntity detalleFacturaEntity, long header) {
+        detalleFacturaEntity.setHeader(header);
+        return detalleFacturaRepository.save(detalleFacturaEntity);
     }
 
     public List<CabeceraFacturaEntity> encotrarCabeceraFacturaNit(String nit, String order){
-        List<CabeceraFacturaEntity> list = (List<CabeceraFacturaEntity>) this.cabeceraFacturaRepository.findAll();
-        list = list.stream()
+        List<CabeceraFacturaEntity> cabeceraFacturaEntityList = (List<CabeceraFacturaEntity>) this.cabeceraFacturaRepository.findAll();
+        cabeceraFacturaEntityList = cabeceraFacturaEntityList.stream()
                 .filter(a -> Objects.equals(a.getNit(), nit))
                 .collect(Collectors.toList());
-        list.sort(Comparator.comparing(CabeceraFacturaEntity::getNit));
-        return list;
+        cabeceraFacturaEntityList.sort(Comparator.comparing(CabeceraFacturaEntity::getNit));
+        return cabeceraFacturaEntityList;
 
     }
 
