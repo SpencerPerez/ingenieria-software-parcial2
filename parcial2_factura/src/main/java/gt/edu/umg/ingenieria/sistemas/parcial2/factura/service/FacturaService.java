@@ -4,7 +4,12 @@ import gt.edu.umg.ingenieria.sistemas.core.parcial2.core.model.CabeceraFacturaEn
 import gt.edu.umg.ingenieria.sistemas.core.parcial2.core.model.DetalleFacturaEntity;
 import gt.edu.umg.ingenieria.sistemas.parcial2.factura.dao.CabeceraFacturaRepository;
 import gt.edu.umg.ingenieria.sistemas.parcial2.factura.dao.DetalleFacturaRepository;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +18,47 @@ public class FacturaService {
 
     @Autowired
     private CabeceraFacturaRepository cabeceraFacturaRepository;
-    
+
     @Autowired
     private DetalleFacturaRepository detalleFacturaRepository;
-    
+
     public List<CabeceraFacturaEntity> buscarTodasCabecerasFactura() {
         return (List<CabeceraFacturaEntity>) this.cabeceraFacturaRepository.findAll();
-    }
-
-    public CabeceraFacturaEntity crearFactura (CabeceraFacturaEntity cabeceraFacturaEntity){
-        return cabeceraFacturaRepository.save(cabeceraFacturaEntity);
-    }
-
-    public  DetalleFacturaEntity crearDetalleFactura (DetalleFacturaEntity detalleFacturaEntity){
-        return detalleFacturaRepository.save(detalleFacturaEntity);
     }
 
     public List<DetalleFacturaEntity> buscarTodosDetallesFactura() {
         return (List<DetalleFacturaEntity>) this.detalleFacturaRepository.findAll();
     }
-    
+
     public List<DetalleFacturaEntity> buscarTodosDetallesFactura(Long idCabeceraFactura) {
         return this.detalleFacturaRepository.findByHeader(idCabeceraFactura);
+    }
+
+    public CabeceraFacturaEntity crearCabeceraFactura(CabeceraFacturaEntity entity) {
+        String[] words = entity.getClientName().split(" ");
+
+        for (int i = 0; i < words.length; i++)
+        {
+            words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1).toLowerCase();
+        }
+
+        entity.setClientName(String.join(" ", words));
+        return cabeceraFacturaRepository.save(entity);
+    }
+
+    public DetalleFacturaEntity crearDetalleFactura(DetalleFacturaEntity entity, long header) {
+        entity.setHeader(header);
+        return detalleFacturaRepository.save(entity);
+    }
+
+    public List<CabeceraFacturaEntity> encotrarCabeceraFacturaNit(String nit, String order){
+        List<CabeceraFacturaEntity> list = (List<CabeceraFacturaEntity>) this.cabeceraFacturaRepository.findAll();
+        list = list.stream()
+                .filter(a -> Objects.equals(a.getNit(), nit))
+                .collect(Collectors.toList());
+        list.sort(Comparator.comparing(CabeceraFacturaEntity::getNit));
+        return list;
+
     }
 
 }
